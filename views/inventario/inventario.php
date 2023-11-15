@@ -47,7 +47,6 @@
     <div id="accordion-one" class="accordion">
       <div class="d-flex flex-row justify-content-space ml-5">
         <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle"></i> Añadir Transformador</button>
-        <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle"></i> Añadir Operación</button>
         <!-- <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseOne"></button> -->
       </div>
       <div id="collapseOne" class="collapse card mt-3 col-9 rounded mx-auto" data-parent="#accordion-one">
@@ -99,45 +98,7 @@
         </div>
       </div>
       
-      <div id="collapseTwo" class="collapse card mt-3 col-9 rounded mx-auto" data-parent="#accordion-one">
-        <div class="card-body">
-          <h4 class="card-title">Añadir datos de la operación</h4>
-          <form action="<?php echo SERVERURL; ?>conexiones/historial.php" name="HAdd" id="HAdd" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="save" class="FormularioAjax p-3">
-            <div class="form-group">
-              <label for="HProcAdd" class="text-dark">Procedimiento</label>
-              <select id="HProcAdd" class="form-control input-default" name="HProcAdd">
-                <option disabled selected="selected">Seleccione el procedimiento realizado</option>
-                <option value="Reparación">Reparación</option>
-                <option value="Almacenamiento">Almacenamiento</option>
-                <option value="Instalación">Instalación</option>
-                <option value="Retiro">Retiro</option>
-              </select>
-            </div>
-              <input type="hidden" name="HAddInput">  
-            <div class="form-group">
-              <label for="HFechaAdd" class="text-dark">Fecha</label>
-              <p>Indique en que fecha se realizó el procedimiento</p>
-              <input id="HFechaAdd" type="date" class="form-control input-default" name="HFechaAdd">
-            </div>
-            <div class="form-group">
-              <label for="HEquipoAdd" class="text-dark">Número Serial</label>
-              <input id="HEquipoAdd" type="text" class="form-control input-default" name="HEquipoAdd" placeholder="Ingrese el número serial del transformador">
-            </div>
-            <div class="form-group">
-              <label for="HEstadoAct" class="text-dark">Estado Actual</label>
-              <select id="HEstadoAct" class="form-control input-default" name="HEstadoAct">
-                <option disabled selected="selected">¿Cúal es el estado actual del transformador?</option>
-                <option value="Funcionando">Funcionando</option>
-                <option value="Dañado">Dañado</option>
-                <option value="Almacenado">Almacenado</option>
-              </select>
-            </div>
-
-            <div class="RespuestaAjax mt-3"></div> 
-            <button type="submit" class="btn btn-primary">Añadir datos</button>
-          </form>
-        </div>
-      </div>
+      
       <!-- <div id="collapseThree" class="collapse card mt-2" data-parent="#accordion-one">
         <div class="card-body">3</div>
       </div> -->
@@ -145,44 +106,46 @@
 
 
     <div class="col-lg-11 mx-auto mt-4 card">
-          <div class="card-body">
-              <div class="card-title">
-                  <h4>Lista de Transformadores</h4>
-              </div>
-              <div class="table-responsive">
-                  <table class="table table-striped table-hover" id="table">
-                      <thead>
-                          <tr>
-                              <th>#</th>
-                              <th>N° Serial</th>
-                              <th>Estado</th>
-                              <th>Capacidad</th>
-                              <th>Municipio</th>
-                              <th>Dirección</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                      <?php
-                          $result = connect()->query("SELECT * FROM transformadores");
-                          $num = 1;
+      <div class="card-body">
+        <div class="card-title">
+          <h4>Lista de Transformadores</h4>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover" id="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>N° Serial</th>
+                <th>Estado</th>
+                <th>Capacidad</th>
+                <th>Municipio</th>
+                <th>Dirección</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $result = connect()->query("SELECT * FROM transformadores");
+                $num = 1;
 
-                          while ($rows = $result->fetch()) {
-                            echo"<tr>
-                                  <th> <strong>" . $num++ . "</strong></th>
-                                  <td><a class='text-info' href='equipo?serial=" . $rows['T_Codigo'] . "'>" . $rows['T_Codigo'] . "</a></td>
-                                  <td>" . $rows['T_Estado'] . "</td>
-                                  <td>" . $rows['T_Capacidad'] . "</td>
-                                  <td>" . $rows['T_Municipio'] . "</td>
-                                  <td>" . $rows['T_Direccion'] . "</td>
-                                </tr>";
-                          };  
-                        ?>
-                      </tbody>
-                      
-                  </table>
-              </div>
-          </div>
+                while ($rows = $result->fetch()) {
+                  echo"<tr>
+                        <th> <strong>" . $num++ . "</strong></th>
+                        <td><a class='text-info' href='equipo?serial=" . $rows['T_Codigo'] . "'>" . $rows['T_Codigo'] . "</a></td>
+                        <td>" . $rows['T_Estado'] . "</td>
+                        <td>" . $rows['T_Capacidad'] . "</td>
+                        <td>" . $rows['T_Municipio'] . "</td>
+                        <td>" . $rows['T_Direccion'] . "</td>
+                      </tr>";
+                };  
+              ?>
+            </tbody>
+          </table>
+        </div>
       </div>
+    </div>
+
+
+    
 
   </div>
 

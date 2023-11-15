@@ -142,28 +142,36 @@
         <div class="card w-100">
           <div class="card-body p-4">
             
-          <h5 class="card-title fw-semibold mt-1">Historial de Operaciones</h5>
+            <h5 class="card-title fw-semibold mt-1">Historial de Operaciones</h5>
+            <?php
+              $result = connect()->query("SELECT * FROM operaciones");
+
+              while ($rows = $result->fetch()) {
+                if($rows['O_Procedimiento'] == "Retiro") {
+                  $color = "text-danger";
+                } else if($rows['O_Procedimiento'] == "Instalación") {
+                  $color = "text-success";
+                } else if($rows['O_Procedimiento'] == "Almacenamiento") {
+                  $color = "text-info";
+                } else if($rows['O_Procedimiento'] == "Reparación") {
+                  $color = "text-warning";
+                }
+
+                echo '<div class="d-flex flex-row justify-content-center font-tiny mt-4">
+                        <p class="text-muted">' . $rows['O_Fecha'] . '</p>
+                        <i class="bx bx-circle ' . $color . ' mx-2 mt-1"></i>
+                        <p class="text-dark">' . $rows['O_Procedimiento'] . '</p>
+                      </div>
+                ';
+              };  
+            ?>
+          
             
-          <div class="d-flex flex-row justify-content-center font-tiny mt-4">
+          <!-- <div class="d-flex flex-row justify-content-center font-tiny mt-4">
             <p class="text-muted">12/12/1010</p>
             <i class="bx bx-circle text-success mx-2 mt-1"></i>
             <p class="text-bold">Instalación</p>
-          </div>
-          <div class="d-flex flex-row justify-content-center font-tiny">
-            <p class="text-muted">12/12/1010</p>
-            <i class="bx bx-circle text-success mx-2 mt-1"></i>
-            <p class="text-bold">Instalación</p>
-          </div>
-          <div class="d-flex flex-row justify-content-center font-tiny">
-            <p class="text-muted">12/12/1010</p>
-            <i class="bx bx-circle text-success mx-2 mt-1"></i>
-            <p class="text-bold">Instalación</p>
-          </div>
-          <div class="d-flex flex-row justify-content-center font-tiny">
-            <p class="text-muted">12/12/1010</p>
-            <i class="bx bx-circle text-success mx-2 mt-1"></i>
-            <p class="text-bold">Instalación</p>
-          </div>
+          </div> -->
 
 
           </div>
