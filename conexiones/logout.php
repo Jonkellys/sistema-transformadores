@@ -15,4 +15,4 @@
     
   session_destroy();
 
-  echo '<script> window.location.href = "http://localhost:85/sistema-transformadores/login"; </script>';
+  echo '<script> window.location.href = "http://localhost/sistema-transformadores/login"; </script>';

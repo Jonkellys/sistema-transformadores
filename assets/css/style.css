@@ -3475,22 +3475,22 @@ input[type="button"].btn-block {
   .page-link:not(:disabled):not(.disabled) {
     cursor: pointer; }
 
-.page-item:first-child .page-link, .paginate_button {
+.page-item:first-child .page-link {
   margin-left: 0;
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem; }
 
-.page-item:last-child .page-link, .paginate_button {
+.page-item:last-child .page-link {
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem; }
 
-.page-item.active .page-link, .paginate_button {
+.page-item.active .page-link {
   z-index: 1;
   color: #fff;
   background-color: #7571f9;
   border-color: #7571f9; }
 
-.page-item.disabled .page-link, .paginate_button {
+.page-item.disabled .page-link {
   color: #f7fafc;
   pointer-events: none;
   cursor: auto;
@@ -3502,11 +3502,11 @@ input[type="button"].btn-block {
   font-size: 1.09375rem;
   line-height: 1.5; }
 
-.pagination-lg .page-item:first-child .page-link, .paginate_button {
+.pagination-lg .page-item:first-child .page-link {
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem; }
 
-.pagination-lg .page-item:last-child .page-link, .paginate_button {
+.pagination-lg .page-item:last-child .page-link {
   border-top-right-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem; }
 
@@ -3515,11 +3515,11 @@ input[type="button"].btn-block {
   font-size: 0.76563rem;
   line-height: 1.5; }
 
-.pagination-sm .page-item:first-child .page-link, .paginate_button {
+.pagination-sm .page-item:first-child .page-link {
   border-top-left-radius: 0.2rem;
   border-bottom-left-radius: 0.2rem; }
 
-.pagination-sm .page-item:last-child .page-link, .paginate_button {
+.pagination-sm .page-item:last-child .page-link {
   border-top-right-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem; }
 
@@ -7489,10 +7489,10 @@ sub {
   .border-right-lg {
     border-right: 1px solid #EEEEEE; } }
 
-.page-item.disabled .page-link, .paginate_button {
+.page-item.disabled .page-link {
   color: #bbbbbb; }
 
-.page-item .page-link:focus, .paginate_button {
+.page-item .page-link:focus {
   box-shadow: none; }
 
 @media only screen and (min-width: 1200px) and (max-width: 1440px) {

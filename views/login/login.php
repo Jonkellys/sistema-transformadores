@@ -1,3 +1,5 @@
+<?php $page = "login"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,37 +11,37 @@
   <title>Iniciar Sesión | <?php echo NOMBRE; ?></title>
 </head>
 
-<body class="d-flex flex-column align-items-start" style="width: 100vw;">
+<body class="d-flex flex-column align-items-start bg-body" style="width: 100vw;">
 
 <?php include "./modulos/header.php"; ?>
 
-<div class="d-flex mt-2 flex-row justify-content-between mb-0">
+  <div class="d-flex mt-2 flex-row justify-content-between mb-0 ms-3">
     <a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="./">
       <i class="bx bx-arrow-back"></i> Volver
     </a>
   </div>
 
     <div class="card mb-4 col-9 d-flex flex-row justify-content-start p-0 mx-auto mt-1">
-      <img class="rounded-left" style="width: 55%;" src="<?php echo media; ?>img/image-login.jpg" alt="Login-img">
-      <div class="d-flex flex-row justify-content-center align-items-center w-100 my-5">
+      <img class="rounded-left" style="width: 80%;" src="<?php echo media; ?>img/image-login.jpg" alt="Login-img">
+      <div class="d-flex flex-row justify-content-center align-items-center w-75 my-5">
         <div class="d-flex flex-column align-items-center justify-content-center mt-3 col-12">
-          <h2 class="mb-3 text-info">Iniciar Sesión</h2>
+          <h2 class="mb-3 text-primary">Iniciar Sesión</h2>
           <form action="<?php echo SERVERURL; ?>conexiones/login.php" id="login-form" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="save" class="FormularioAjax p-3 col-10">              
             <div class="form-group col-12">
               <label for="usuarioLog" class="form-label">Nombre de Usuario</label>
               <input type="text" name="usuario" onkeypress="return letras(event)" id="usuarioLog" class="form-control input-default " placeholder="Ingresa tu nombre de Usuario" />
             </div>
                     
-            <div class="form-group col-12">
+            <div class="form-group col-12 mt-4">
               <label for="claveLog" class="form-label">Contraseña</label>
               <input type="password" name="clave"  id="claveLog" class="form-control input-default" placeholder="Ingresa tu Contraseña" />
             </div>
-            <a href="recuperar" class="ml-2 text-primary">¿Olvidaste tu Contraseña?</a>
+            <a href="recover" class="ms-2 mt-4 text-primary">¿Olvidaste tu Contraseña?</a>
                     
             <br>
             <div id="respuesta" class="RespuestaAjax mt-3"></div> 
             <div class="d-flex flex-column align-items-center justify-content-center">
-              <button class="btn btn-primary mx-auto" value="submit" name="submit" id="btn" type="submit">Entrar</button>
+              <button class="btn btn-primary mx-auto mt-2" value="submit" name="submit" id="btn" type="submit">Entrar</button>
             </div>
                     
           </form>

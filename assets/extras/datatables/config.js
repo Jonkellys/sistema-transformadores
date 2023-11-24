@@ -15,10 +15,10 @@ $(document).ready(function(){
       zeroRecords: "No se encontraron coincidencias <br> (Pruebe con otro termino de búsqueda)",
       lengthMenu: "",
       paginate: {
-        first: "<i class='bx bx-chevrons-left m-0'></i>",
-        last: "<i class='bx bx-chevrons-right'></i>",
-        next: "<i class='bx bx-chevron-right'></i>",
-        previous: "<i class='bx bx-chevron-left'></i>",
+        first: "<i class='bx bx-chevrons-left bx-sm align-middle'></i>",
+        last: "<i class='bx bx-chevrons-right bx-sm align-middle'></i>",
+        next: "<i class='bx bx-chevron-right bx-sm align-middle'></i>",
+        previous: "<i class='bx bx-chevron-left bx-sm align-middle'></i>",
       },
     }
   });

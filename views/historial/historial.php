@@ -20,7 +20,7 @@
     session_regenerate_id(true);
                  
     session_destroy();
-    header('Location: http://localhost:85/sistema-transformadores/login');
+    header('Location: http://localhost/sistema-transformadores/login');
   }
 ?>
 
@@ -43,15 +43,15 @@
   </div>
 
   <div class="container-fluid p-4">
-  <div id="accordion-one" class="accordion">
+    <div id="accordion-one" class="accordion">
       <div class="d-flex flex-row justify-content-space ml-5">
-        <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle"></i> Añadir Operación</button>
+        <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle"></i> Añadir Operación</button>
       </div>
       
-      <div id="collapseTwo" class="collapse card mt-3 col-9 rounded mx-auto" data-parent="#accordion-one">
+      <div id="collapseOne" class="collapse card mt-3 col-9 rounded mx-auto" data-parent="#accordion-one">
         <div class="card-body">
           <h4 class="card-title">Añadir datos de la operación</h4>
-          <form action="<?php echo SERVERURL; ?>conexiones/historial.php" name="HAdd" id="HAdd" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="save" class="FormularioAjax p-3">
+          <form action="<?php echo SERVERURL; ?>conexiones/historial.php?HAdd" name="HAdd" id="HAdd" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="save" class="FormularioAjax p-3">
             <div class="form-group">
               <label for="HProcAdd" class="text-dark">Procedimiento</label>
               <select id="HProcAdd" class="form-control input-default" name="HProcAdd">
@@ -70,16 +70,7 @@
             </div>
             <div class="form-group">
               <label for="HEquipoAdd" class="text-dark">Número Serial</label>
-              <input id="HEquipoAdd" type="text" class="form-control input-default" name="HEquipoAdd" placeholder="Ingrese el número serial del transformador">
-            </div>
-            <div class="form-group">
-              <label for="HEstadoAct" class="text-dark">Estado Actual</label>
-              <select id="HEstadoAct" class="form-control input-default" name="HEstadoAct">
-                <option disabled selected="selected">¿Cúal es el estado actual del transformador?</option>
-                <option value="Funcionando">Funcionando</option>
-                <option value="Dañado">Dañado</option>
-                <option value="Almacenado">Almacenado</option>
-              </select>
+              <input id="HEquipoAdd" onkeypress="return letras(event)" type="text" class="form-control input-default" name="HEquipoAdd" placeholder="Ingrese el número serial del transformador">
             </div>
 
             <div class="RespuestaAjax mt-3"></div> 
@@ -87,6 +78,7 @@
           </form>
         </div>
       </div>
+
     </div>
 
 
@@ -102,8 +94,9 @@
                 <th>#</th>
                 <th>Procedimiento</th>
                 <th>Fecha</th>
-                <th>Transformador</th>
-                <th>Estado Final</th>
+                <th>N° Serial del Transformador</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -119,6 +112,15 @@
                         <td>" . $rows['O_Fecha'] . "</td>
                         <td><a class='text-info' href='equipo?serial=" . $rows['O_Equipo'] . "'>" . $rows['O_Equipo'] . "</a></td>
                         <td>" . $rows['O_EstadoActual'] . "</td>
+                        <td class='mt-0'>
+                          <a class='btn btn-sm btn-info' href='editar?operacion=" . $rows['O_Codigo'] . "'>
+                            <span class='tf-icons bx bx-edit'></span>
+                          </a>
+
+                          <a class='btn btn-sm btn-danger' href='delete?operacion=" . $rows['O_Codigo'] . "'>
+                            <span class='tf-icons bx bx-trash'></span>
+                          </a>
+                        </td>
                       </tr>";
                 };  
               ?>
@@ -133,6 +135,20 @@
   <?php include "./modulos/scripts.php"; ?>
   <script src="<?php echo media; ?>js/ajax/principal.js"></script>
   <script src="<?php echo media; ?>extras/datatables/config.js"></script>
+  <script>
+    function letras(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
+
+
+        if (tecla == 32) {
+          return true;
+        }
+
+        patron = /[a-zA-Z0-9]/gi;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
+      }
+  </script>
 </body>
 
 </html>

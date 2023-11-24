@@ -2,64 +2,55 @@
 
   function menuDash($name) {
     if($name == "dashboard") {
-      echo 'class="btn disabled"';
+      echo 'class="btn disabled p-2 mr-1"';
     } 
     else {
-      echo 'href="dashboard"  class="btn btn-primary"';
-    }
-  }
-
-  function menuBus($name) {
-    if($name == "busqueda") {
-      echo 'class="btn disabled"';
-    } 
-    else {
-      echo 'href="busqueda"  class="btn btn-primary"';
+      echo 'href="dashboard"  class="btn btn-primary p-2 mr-1"';
     }
   }
 
   function menuInv($name) {
     if($name == "inventario") {
-      echo 'class="btn disabled"';
+      echo 'class="btn disabled p-2 mr-1"';
     } 
     else {
-      echo 'href="inventario"  class="btn btn-primary"';
+      echo 'href="inventario"  class="btn btn-primary p-2 mr-1"';
     }
   }
 
   function menuHis($name) {
     if($name == "historial") {
-      echo 'class="btn disabled"';
+      echo 'class="btn disabled p-2 mr-1"';
     } 
     else {
-      echo 'href="historial"  class="btn btn-primary"';
+      echo 'href="historial"  class="btn btn-primary p-2 mr-1"';
     }
   }
 
-  function menuMapa($name) {
-    if($name == "mapa") {
-      echo 'class="btn disabled"';
+  function menuUbic($name) {
+    if($name == "ubicaciones") {
+      echo 'class="btn disabled p-2 mr-1"';
     } 
     else {
-      echo 'href="mapa"  class="btn btn-primary"';
+      echo 'href="ubicaciones"  class="btn btn-primary p-2 mr-1"';
     }
   }
   
   function menuFile($name) {
     if($name == "reportes") {
-      echo 'class="btn disabled"';
+      echo 'class="btn disabled p-2 mr-1"';
     } 
     else {
-      echo 'href="reportes"  class="btn btn-primary"';
+      echo 'href="reportes"  class="btn btn-primary p-2 mr-1"';
     }
   }
 
   function menuConf($name) {
     if($name == "configuraciones") {
-      echo 'class="btn disabled"';
+      echo 'class="btn disabled p-2 mr-1"';
     } 
     else {
-      echo 'href="configuraciones"  class="btn btn-primary"';
+      echo 'href="configuraciones"  class="btn btn-primary p-2 mr-1"';
     }
   }
 ?>
@@ -69,10 +60,9 @@
     <div class="header-left">
       <div class="btn-group mt-2 mb-2 btn-group-lg">
         <a <?php menuDash($page) ?> data-toggle="tooltip" data-placement="bottom" title="Inicio"><i class="bx bx-home text-white font-medium"></i></a>
-        <!-- <a <?php menuBus($page) ?> data-toggle="tooltip" data-placement="bottom" title="Buscar"><i class="bx bx-search text-white font-medium"></i></a> -->
         <a <?php menuInv($page) ?> data-toggle="tooltip" data-placement="bottom" title="Inventario"><i class="bx bx-list-ul text-white font-medium"></i></a>
         <a <?php menuHis($page) ?> data-toggle="tooltip" data-placement="bottom" title="Historial"><i class="bx bx-time text-white font-medium"></i></a>
-        <a <?php menuMapa($page) ?> data-toggle="tooltip" data-placement="bottom" title="Mapa"><i class="bx bx-map text-white font-medium"></i></a>
+        <a <?php menuUbic($page) ?> data-toggle="tooltip" data-placement="bottom" title="Ubicaciones"><i class="bx bx-map text-white font-medium"></i></a>
         <a <?php menuFile($page) ?> data-toggle="tooltip" data-placement="bottom" title="Reportes"><i class="bx bx-file text-white font-medium"></i></a>
         <a <?php menuConf($page) ?> data-toggle="tooltip" data-placement="bottom" title="Configuraciones"><i class="bx bx-cog text-white font-medium"></i></a>
       </div>

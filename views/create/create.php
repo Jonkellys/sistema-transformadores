@@ -1,3 +1,5 @@
+<?php $page = "create"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,9 +41,17 @@
                               <input type="text" autocapitalize="" name="apellido" onkeypress="return letras(event)" id="apellidoAdd" class="form-control input-default" placeholder="Ingresar Apellido" />
                             </div>
                             </div>
-                            <div class="form-group col-md-6 mx-auto">
+
+    <div class="form-row">
+
+                            <div class="form-group col-md-6">
                             <label for="cargoAdd" class="form-label">Nombre de Cargo</label>
                               <input type="text" name="cargo" id="cargoAdd" class="form-control input-default" placeholder="Ingresar Cargo" />
+                            </div>
+                            <div class="form-group col-md-6">
+                            <label for="correoAdd" class="form-label">Correo Eléctronico</label>
+                              <input type="text" name="correo" id="correoAdd" class="form-control input-default" placeholder="Ingresar Correo" />
+                            </div>
                             </div>
 
                           <br>

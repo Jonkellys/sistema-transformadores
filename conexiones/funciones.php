@@ -17,49 +17,32 @@
         return $conn;
     }
 
-    function funcData() {
-        $benitezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Benítez' AND T_Estado = 'Funcionando'");
+    function funcData($estado) {
+        $andresData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Andrés Mata' AND T_Estado = '$estado'");
+        $andresTotal = $andresData->rowCount(); 
+
+        $arismendiData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Arismendi' AND T_Estado = '$estado'");
+        $arismendiTotal = $arismendiData->rowCount(); 
+
+        $benitezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Benítez' AND T_Estado = '$estado'");
         $benitezTotal = $benitezData->rowCount(); 
 
-        $bermudezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Bermúdez' AND T_Estado = 'Funcionando'");
+        $bermudezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Bermúdez' AND T_Estado = '$estado'");
         $bermudezTotal = $bermudezData->rowCount(); 
 
-        $cajigalData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Cajigal' AND T_Estado = 'Funcionando'");
+        $cajigalData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Cajigal' AND T_Estado = '$estado'");
         $cajigalTotal = $cajigalData->rowCount(); 
 
-        $libertadorData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Libertador' AND T_Estado = 'Funcionando'");
+        $libertadorData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Libertador' AND T_Estado = '$estado'");
         $libertadorTotal = $libertadorData->rowCount(); 
 
-        $mariñoData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Mariño' AND T_Estado = 'Funcionando'");
+        $mariñoData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Mariño' AND T_Estado = '$estado'");
         $mariñoTotal = $mariñoData->rowCount(); 
 
-        $valdezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Valdez' AND T_Estado = 'Funcionando'");
+        $valdezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Valdez' AND T_Estado = '$estado'");
         $valdezTotal = $valdezData->rowCount(); 
 
-        $mainData = [$benitezTotal, $bermudezTotal, $cajigalTotal, $libertadorTotal, $mariñoTotal, $valdezTotal];
-        return $mainData;
-    }
-
-    function damData() {
-        $benitezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Benítez' AND T_Estado = 'Dañado'");
-        $benitezTotal = $benitezData->rowCount(); 
-
-        $bermudezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Bermúdez' AND T_Estado = 'Dañado'");
-        $bermudezTotal = $bermudezData->rowCount(); 
-
-        $cajigalData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Cajigal' AND T_Estado = 'Dañado'");
-        $cajigalTotal = $cajigalData->rowCount(); 
-
-        $libertadorData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Libertador' AND T_Estado = 'Dañado'");
-        $libertadorTotal = $libertadorData->rowCount(); 
-
-        $mariñoData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Mariño' AND T_Estado = 'Dañado'");
-        $mariñoTotal = $mariñoData->rowCount(); 
-
-        $valdezData = connect()->query("SELECT id FROM transformadores WHERE T_Municipio = 'Valdez' AND T_Estado = 'Dañado'");
-        $valdezTotal = $valdezData->rowCount(); 
-
-        $mainData = [$benitezTotal, $bermudezTotal, $cajigalTotal, $libertadorTotal, $mariñoTotal, $valdezTotal];
+        $mainData = [$andresTotal, $arismendiTotal, $benitezTotal, $bermudezTotal, $cajigalTotal, $libertadorTotal, $mariñoTotal, $valdezTotal];
         return $mainData;
     }
 
@@ -96,17 +79,6 @@
         return $string;
     }
 
-    function conectar() {
-        $servername = "localhost";
-        $dbname = "sistema-corpoelec";
-        $username = "root";
-        $password = "";
-        
-        $con = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $con;
-    }
-
     function encrypt($string) {
         $output = FALSE;
         $key = hash('sha256', SECRET_KEY);
@@ -124,7 +96,7 @@
     }
 
     function ejecutar_consulta_simple($consulta) {
-        $consul = conectar()->prepare($consulta);
+        $consul = connect()->prepare($consulta);
         $consul->execute();
         return $consul;
     }
@@ -138,33 +110,61 @@
         return $letra . "-" . $num;
     }
 
+    function getMunCount($state, $mun) {
+        if($state == false) {
+            $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Municipio = '$mun'");
+        } else if($mun == false) {
+        $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = '$state'");
+        } else {
+            $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = '$state' AND T_Municipio = '$mun'");
+        }
+        $total = ($query->rowCount());
+        return $total;
+    }
+
+    function getMunCapacidad($mun) {
+        $total = 0;
+
+        if($mun == false) {
+            $query = connect()->query("SELECT T_Capacidad FROM transformadores WHERE T_Estado = 'Funcionando' ");
+        } else {
+            $query = connect()->query("SELECT T_Capacidad FROM transformadores WHERE T_Municipio = '$mun' AND T_Estado = 'Funcionando'");
+        }
+
+        while ($rows = $query->fetch()) {
+            $total = $total + $rows['T_Capacidad'];
+        };  
+
+        return $total . " w";
+    }
+
     function updateCuenta($nombre, $apellido, $usuario, $correo, $genero, $codigo) {
-        $upCuenta = conectar()->prepare("UPDATE cuentas SET CuentaNombre = '$nombre', CuentaEmail = '$correo', CuentaApellido = '$apellido', CuentaUsuario = '$usuario', CuentaGenero = '$genero' WHERE CuentaCodigo = '$codigo'");
+        $upCuenta = connect()->prepare("UPDATE cuentas SET CuentaNombre = '$nombre', CuentaEmail = '$correo', CuentaApellido = '$apellido', CuentaUsuario = '$usuario', CuentaGenero = '$genero' WHERE CuentaCodigo = '$codigo'");
         $upCuenta->execute();
         return $upCuenta;
     } 
 
     function updatePass($pass, $codigo) {
-        $upPass = conectar()->prepare("UPDATE cuentas SET CuentaClave = '$pass' WHERE CuentaCodigo = '$codigo'");
+        $upPass = connect()->prepare("UPDATE usuario SET CuentaClave = '$pass' WHERE CuentaCodigo = '$codigo'");
         $upPass->execute();
         return $upPass;
     }
 
     function eliminarCuenta($codigo) {
         $delCuenta = "DELETE FROM cuentas WHERE CuentaCodigo = '$codigo'";
-        $delCuenta = conectar()->query($delCuenta);
+        $delCuenta = connect()->query($delCuenta);
         return $delCuenta;
     }
 
     function eliminarAdmin($codigo) {
-        $sql = conectar()->prepare("DELETE FROM admins WHERE CuentaCodigo = :codigo");
+        $sql = connect()->prepare("DELETE FROM admins WHERE CuentaCodigo = :codigo");
         $sql->bindParam(":codigo", $codigo);
         $sql->execute();
         return $sql;
     }
 
     function eliminarUsuario($codigo) {
-        $query = conectar()->prepare("DELETE FROM Usuarios WHERE CuentaCodigo = :codigo");
+        $query = connect()->prepare("DELETE FROM Usuarios WHERE CuentaCodigo = :codigo");
         $query->bindParam(":codigo", $codigo);
         $query->execute();
         return $query;

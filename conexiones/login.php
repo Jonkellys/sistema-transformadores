@@ -43,9 +43,9 @@
           $_SESSION["acceso"]= time(); 
 
           if($row['userType'] == "Administrador") {
-            echo '<script> window.location.href = "http://localhost:85/sistema-transformadores/dashboard"; </script>';
+            echo '<script> window.location.href = "http://localhost/sistema-transformadores/dashboard"; </script>';
           } else {
-            echo '<script> window.location.href = "http://localhost:85/sistema-transformadores/userDashboard"; </script>';
+            echo '<script> window.location.href = "http://localhost/sistema-transformadores/userDashboard"; </script>';
           }
         
       } else {

@@ -20,7 +20,7 @@
     session_regenerate_id(true);
                  
     session_destroy();
-    header('Location: http://localhost:85/sistema-transformadores/login');
+    header('Location: http://localhost/sistema-transformadores/login');
   }
 ?>
 

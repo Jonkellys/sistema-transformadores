@@ -24,7 +24,7 @@
 
   </head>
 
-  <body>
+  <body class="bg-body">
     <!-- Content -->
 
     <!-- Error -->

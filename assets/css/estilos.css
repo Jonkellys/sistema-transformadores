@@ -2,6 +2,10 @@
   font-family:  "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;;
 }
 
+.w-40 {
+width: 40% !important; 
+}
+
 .form-label {
   margin-bottom: 0.5rem;
   font-size: 0.75rem;
@@ -77,35 +81,23 @@
   width: 65% !important; 
 }
 
-.timeline-widget .timeline-item {
-  min-height:70px;
-}
-.timeline-widget .timeline-item .timeline-time {
-  padding:6px 16px 6px 0;
-  min-width:90px;
-}
-.timeline-widget .timeline-item .timeline-badge-wrap .timeline-badge {
-  width:12px;
-  height:12px;
-  border-radius:50px;
-  background-color:transparent;
-}
-.timeline-widget .timeline-item .timeline-badge-wrap .timeline-badge-border {
-  width:1px;
-  height:100%;
-  background-color:#ebf1f6;
-}
-.timeline-widget .timeline-item .timeline-desc {
-  padding:6px 16px;
-}
-.timeline-widget .timeline-item .timeline-badge .badge-primary {
-  border:2px solid #5D87FF;
-}
-
 .bg-body {
   background: #F3F3F9;
 }
+  
+  .page-link {
+  padding: 0px !important;
+  border: none !important;
+  background: transparent !important;}
+  
+    .page-link:hover {
+  color: white !important;}
+  
+.page-item.active {
+  color: white !important;
+  background-color: #7571f9;}
+  }
 
-.w-fit {
-  width: fit-content !important;
+.paginate_button .current {
+color: white !important;
 }

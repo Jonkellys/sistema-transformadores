@@ -1,11 +1,12 @@
 $(document).ready(function(){
 
-    $('.FormularioAjax').submit(function(e) {
+    
+    $('#TUpdate').submit(function(e) {
         e.preventDefault();
 
         var form = $('form').get(0);
         var formu = $(this);
-
+    
         var tipo = formu.attr('data-form');
         var accion = formu.attr('action');
         var metodo = formu.attr('method');
@@ -45,11 +46,10 @@ $(document).ready(function(){
                     beforeSend: function(){},
                     success: function(data) {
                         respuesta.html(data);
-                        // console.log(data);
+                        console.log(data);
                     },
-                    error: function(error) {
-                        respuesta.html("Error: " + error);
-                        console.log("Error: " + error);
+                    error: function() {
+                        respuesta.html(msjError);
                     }
                 });
             } else if(result.isDenied) {

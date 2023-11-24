@@ -20,7 +20,7 @@
     session_regenerate_id(true);
                  
     session_destroy();
-    header('Location: http://localhost:85/sistema-transformadores/login');
+    header('Location: http://localhost/sistema-transformadores/login');
   }
 ?>
 
@@ -35,17 +35,18 @@
   <title>Inicio | <?php echo NOMBRE; ?></title>
 </head>
 
-<body style="width: 100vw;">
+<body class="bg-body" style="width: 100vw;">
   <?php include "./modulos/menu.php"; ?>
 
   <div class="container-fluid mt-0 flex-grow-1 container-p-y ml-3">
-    <h4 class="fw-bold mb-4">Inicio</h4>
+    <h4 class="fw-bold mb-3">Inicio</h4>
   </div>
 
   <div class="page-breadcrumb ml-5">
     <div class="row">
       <div class="col-7 align-self-center">
         <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Buenos Días, <?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h3>
+        <p style="width: fit-content;" class="font-tiny"><?php echo $_SESSION['cargo']; ?></p>
       </div>
     </div>
   </div>
@@ -56,27 +57,18 @@
     <div class="card-group col-11 mx-auto">
     <?php
      include "./conexiones/funciones.php";
-     
-     $TInstall = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = 'Funcionando'");
-     $InstallTotal = ($TInstall->rowCount());
-     
-     $TDam = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = 'Dañado'");
-     $DamTotal = ($TDam->rowCount());
-     
-     $TAlm = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = 'Almacenado'");
-     $AlmTotal = ($TAlm->rowCount());
     ?>
       <div class="card border-right">
         <div class="card-body">
           <div class="d-flex d-lg-flex d-md-block align-items-center">
             <div>
               <div class="d-inline-flex align-items-center">
-                <h2 class="text-dark mb-1 font-weight-medium"><?php echo $InstallTotal; ?></h2>
+                <h2 class="text-dark mb-1 font-weight-medium"><?php echo getMunCount('Funcionando', false); ?></h2>
               </div>
-              <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transformadores Funcionando</h6>
+              <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transformadores Instalados</h6>
             </div>
             <div class="ml-auto mt-md-3 mt-lg-0">
-              <span class="opacity-7 text-muted"><i class="bx bx-calendar-alt font-big text-success"></i></span>
+              <span class="opacity-3 text-muted"><i class="bx bx-calendar-alt font-big text-success"></i></span>
             </div>
           </div>
         </div>
@@ -86,12 +78,12 @@
           <div class="d-flex d-lg-flex d-md-block align-items-center">
             <div>
               <div class="d-inline-flex align-items-center">
-                <h2 class="text-dark mb-1 font-weight-medium"><?php echo $DamTotal; ?></h2>
+                <h2 class="text-dark mb-1 font-weight-medium"><?php echo getMunCount('Dañado', false); ?></h2>
               </div>
               <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transformadores Dañados</h6>
             </div>
             <div class="ml-auto mt-md-3 mt-lg-0">
-              <span class="opacity-7 text-muted"><i class="bx bx-calendar-alt font-big text-warning"></i></span>
+              <span class="opacity-3 text-muted"><i class="bx bx-calendar-alt font-big text-warning"></i></span>
             </div>
           </div>
         </div>
@@ -101,12 +93,12 @@
           <div class="d-flex d-lg-flex d-md-block align-items-center">
             <div>
               <div class="d-inline-flex align-items-center">
-                <h2 class="text-dark mb-1 font-weight-medium"><?php echo $AlmTotal; ?></h2>
+                <h2 class="text-dark mb-1 font-weight-medium"><?php echo getMunCount('Almacenado', false); ?></h2>
               </div>
-              <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transformadores Almacenados</h6>
+              <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transformadores en Stock</h6>
             </div>
             <div class="ml-auto mt-md-3 mt-lg-0">
-              <span class="opacity-7 text-muted"><i class="bx bx-calendar-alt font-big text-info"></i></span>
+              <span class="opacity-3 text-muted"><i class="bx bx-calendar-alt font-big text-info"></i></span>
             </div>
           </div>
         </div>
@@ -116,9 +108,9 @@
           <div class="d-flex d-lg-flex d-md-block align-items-center">
             <div>
               <div class="d-inline-flex align-items-center">
-                <h2 class="text-dark mb-1 font-weight-medium">1538</h2>
+                <h2 class="text-dark mb-1 font-weight-medium"><?php echo getMunCapacidad(false); ?></h2>
               </div>
-              <h6 class="text-gray font-weight-normal mb-0 w-100 text-truncate">Capacidad Generada</h6>
+              <h6 class="text-gray font-weight-normal mb-0 w-100 text-truncate">Capacidad Instalada</h6>
             </div>
             <div class="ml-auto mt-md-3 mt-lg-0">
               <span class="opacity-7 text-muted"><i class="bx bx-bulb font-big text-danger"></i></span>
@@ -142,7 +134,7 @@
         <div class="card w-100">
           <div class="card-body p-4">
             
-            <h5 class="card-title fw-semibold mt-1">Historial de Operaciones</h5>
+            <h5 class="card-title fw-semibold mt-1 mb-4">Historial de Operaciones</h5>
             <?php
               $result = connect()->query("SELECT * FROM operaciones");
 
@@ -157,21 +149,15 @@
                   $color = "text-warning";
                 }
 
-                echo '<div class="d-flex flex-row justify-content-center font-tiny mt-4">
+                echo '<div class="d-flex flex-row justify-content-center font-tiny mt-0">
                         <p class="text-muted">' . $rows['O_Fecha'] . '</p>
-                        <i class="bx bx-circle ' . $color . ' mx-2 mt-1"></i>
-                        <p class="text-dark">' . $rows['O_Procedimiento'] . '</p>
+                        <i class="bx bx-circle ' . $color . ' mx-2 mt-1 font-weight-bold"></i>
+                        <p class="text-dark">' . $rows['O_Procedimiento'] . ' - <a href="equipo?serial=' . $rows['T_Codigo'] . '">' . $rows['O_Equipo'] . '</a></p>
                       </div>
                 ';
               };  
             ?>
           
-            
-          <!-- <div class="d-flex flex-row justify-content-center font-tiny mt-4">
-            <p class="text-muted">12/12/1010</p>
-            <i class="bx bx-circle text-success mx-2 mt-1"></i>
-            <p class="text-bold">Instalación</p>
-          </div> -->
 
 
           </div>
@@ -185,12 +171,12 @@
   <?php include "./modulos/scripts.php"; ?>
   <script type="module" src="<?php echo media; ?>extras/chartjs/chart.umd.min.js"></script>
   <script type="module">
-    const funcData = <?php echo json_encode(funcData()) ?>;
-    const damData = <?php echo json_encode(damData()) ?>;
+    const funcData = <?php echo json_encode(funcData("Funcionando")) ?>;
+    const damData = <?php echo json_encode(funcData("Dañado")) ?>;
     const data = {
-      labels: ["Benítez", "Bermúdez", "Cajigal", "Libertador", "Mariño", "Valdez"],
+      labels: ["Andrés Mata", "Arismendi", "Benítez", "Bermúdez", "Cajigal", "Libertador", "Mariño", "Valdez"],
       datasets: [{
-        label: "Funcionando",
+        label: "Instalando",
         data: funcData,
         borderColor: "rgba(111, 217, 111, 0.9)",
         borderWidth: "0",
