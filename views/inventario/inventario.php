@@ -46,9 +46,7 @@
   <div class="container-fluid p-4">
 
     <div class="d-flex flex-row justify-content-space ml-5">
-      <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle"></i> Añadir Transformador</button>
-        <!-- <button class="mb-0 btn btn-info mx-1" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-edit"></i> Editar Transformador</button>
-        <button class="mb-0 btn btn-danger mx-1" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-trash"></i> Eliminar Transformador</button> -->
+      <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle text-white"></i> Añadir Transformador</button>
     </div>
 
     <div id="accordion-one" class="accordion">
@@ -107,7 +105,7 @@
               <label for="TEstadoAdd" class="text-dark">Estado Actual</label>
               <select id="TEstadoAdd" class="form-control input-default" name="TEstadoAdd">
                 <option disabled selected="selected">¿Cúal es el estado actual del transformador?</option>
-                <option value="Funcionando">Funcionando</option>
+                <option value="Instalado">Instalado</option>
                 <option value="Dañado">Dañado</option>
                 <option value="Almacenado">Almacenado</option>
               </select>
@@ -141,7 +139,11 @@
                 <th>Dirección</th>
                 <th>Tipo</th>
                 <th>Banco Transformador</th>
-                <th>Acciones</th>
+                <?php
+                  if($_SESSION['tipo'] == "Administrador") {
+                    echo '<th>Acciones</th>';
+                  }
+                ?>
               </tr>
             </thead>
             <tbody>
@@ -152,37 +154,27 @@
                 while ($rows = $result->fetch()) {
                   echo"<tr>
                         <th> <strong>" . $num++ . "</strong></th>
-                        <td><a class='text-info' href='equipo?serial=" . $rows['T_Codigo'] . "'>" . $rows['T_Codigo'] . "</a></td>
+                        <td><a class='text-info' href='transformador?serial=" . $rows['T_Codigo'] . "'>" . $rows['T_Codigo'] . "</a></td>
                         <td>" . $rows['T_Estado'] . "</td>
-                        <td>" . $rows['T_Capacidad'] . "</td>
+                        <td>" . $rows['T_Capacidad'] . " w</td>
                         <td>" . $rows['T_Municipio'] . "</td>
                         <td>" . $rows['T_Direccion'] . "</td>
                         <td>" . $rows['T_Tipo'] . "</td>
-                        <td>" . $rows['T_Banco'] . "</td>
-                        <td class='mt-0'>
+                        <td>" . $rows['T_Banco'] . "</td>";
+                        if($_SESSION['tipo'] == "Administrador") {
+                        echo "<td class='mt-0'>
                           <a class='btn btn-sm btn-info' href='editar?transformador=" . $rows['T_Codigo'] . "'>
-                            <span class='tf-icons bx bx-edit'></span>
+                            <span class='tf-icons bx bx-edit text-white'></span>
                           </a>
 
                           <a class='btn btn-sm btn-danger' href='delete?transformador=" . $rows['T_Codigo'] . "'>
-                            <span class='tf-icons bx bx-trash'></span>
+                            <span class='tf-icons bx bx-trash text-white'></span>
                           </a>
-
-
-                        </td>
-                  </tr>";
+                        </td>";
+                        }
+                  echo "</tr>";
                 };  
               ?>
-              <!-- <a class='btn btn-sm btn-danger' href= 'conexiones/eliminarPersonal.php?serial=" . $rows['T_Codigo'] . "'>
-                            <span class='tf-icons bx bx-trash'></span>
-                          </a> -->
-
-                          <!-- <form action='" . SERVERURL . "conexiones/inventario.php?deleteT' name='Tdelete' id='Tdelete' autocomplete='off' enctype='multipart/form-data' method='POST' data-form='delete' class='FormularioAjax p-3'>
-                            <input type='hidden' name='delT' value='" . $rows['T_Codigo'] . "' />
-                            <div class='RespuestaAjax mt-3'></div> 
-                          
-                            <button class='btn btn-sm btn-danger' type='submit'><span class='tf-icons bx bx-trash'></span></button>
-                          </form> -->
                           
             </tbody>
           </table>

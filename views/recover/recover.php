@@ -1,4 +1,23 @@
-<?php $page = "recover"; ?>
+<?php
+  session_start(['name' => 'Sistema']);
+
+  unset($_SESSION['id']);
+  unset($_SESSION['codigo']);
+  unset($_SESSION['usuario']);
+  unset($_SESSION['clave']);
+  unset($_SESSION['tipo']);
+  unset($_SESSION['nombre']);
+  unset($_SESSION['apellido']);
+  unset($_SESSION['cargo']);
+  unset($_SESSION['token']);
+  unset($_SESSION['acceso']);
+
+  session_regenerate_id(true);
+                
+  session_destroy();
+  
+  $page = "recover";
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +36,7 @@
 
   <div class="d-flex mt-2 flex-row justify-content-between mb-0 ms-3">
     <a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="login">
-      <i class="bx bx-arrow-back"></i> Volver
+      <i class="bx bx-arrow-back text-primary"></i> Volver
     </a>
   </div>
 

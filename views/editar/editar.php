@@ -19,6 +19,10 @@
                  
     session_destroy();
     header('Location: http://localhost/sistema-transformadores/login');
+
+  }
+  if($_SESSION['tipo'] == "Normal" && !isset($_GET['cuenta'])) {
+    header('Location: http://localhost/sistema-transformadores/dashboard');
   }
 ?>
 
@@ -39,28 +43,50 @@
     include "./conexiones/funciones.php"; 
   ?>
 
-  <div class="d-flex flex-row justify-content-between mb-0 ms-3">
-    <a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="inventario">
-      <i class="bx bx-arrow-back"></i> Volver
-    </a>
-  </div>
+    <div class="d-flex flex-row justify-content-between mb-0 ms-3">
+      <?php
+          if(isset($_GET['transformador'])) {
+                echo '<a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="inventario">';
+          } else if(isset($_GET['operacion'])) {
+            echo '<a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="historial">';
+          } else if(isset($_GET['cuenta'])) {
+            echo '<a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="configuraciones">';
+          }
+        ?>
+        <i class="bx bx-arrow-back text-primary"></i> Volver
+      </a>
+    </div>
 
   <div class="container-fluid mt-0 flex-grow-1 container-p-y ml-5 mt-3">
-    <h4 class="fw-bold mb-0">Editar <?php if(isset($_GET['transformador'])) {echo "Transformador" . $delete;} else if(isset($_GET['operacion'])) {echo "Operación " . $delete;}?></h4>
+    <h4 class="fw-bold mb-0">Editar <?php if(isset($_GET['transformador'])) {echo "Transformador";} else if(isset($_GET['operacion'])) {echo "Operación";} else if(isset($_GET['cuenta'])) {echo "Cuenta";} ?></h4>
   </div>
 
     <?php 
       if(isset($_GET['transformador'])) {
 
-        $codigo = $_GET['transformador'];
-  
+        $codigo = strClean($_GET['transformador']);
         $sql = connect()->prepare("SELECT * FROM transformadores WHERE T_Codigo = '$codigo'");
+
       } else if(isset($_GET['operacion'])) {
   
-        $codigo = $_GET['operacion'];
+        $codigo = strClean($_GET['operacion']);
+        $sql = connect()->prepare("SELECT * FROM operaciones WHERE O_Codigo = '$codigo'");
+
+      } else if(isset($_GET['cuenta'])) {
   
-        $sql = connect()->prepare("SELECT * FROM operaciones WHERE O_Codigo= '$codigo'");
+        $codigo = strClean($_GET['cuenta']);
+
+        if($_SESSION['tipo'] == "Normal" && $_SESSION['codigo'] != $codigo) {
+          header('Location: http://localhost/sistema-transformadores/dashboard');
+        } 
+        
+        $sql = connect()->prepare("SELECT * FROM usuarios WHERE userCodigo = '$codigo'");
       }
+
+      if(!isset($codigo)) {
+        header('Location: http://localhost/sistema-transformadores/dashboard');
+      }
+
       $sql->execute();
       $data = $sql->fetch(PDO::FETCH_OBJ);
     ?>
@@ -148,19 +174,19 @@
               <select id="TEstadoUpdate" class="form-control input-default" name="TEstadoUpdate">
                 <option value="' . $data->T_Estado . '" selected="selected">' . $data->T_Estado . '</option>
                 ';
-                  if($data->T_Estado == "Funcionando") {
+                  if($data->T_Estado == "Instalado") {
                     echo '
                       <option value="Dañado">Dañado</option>
                       <option value="Almacenado">Almacenado</option>
                     ';
                   } else if($data->T_Estado == "Dañado") {
                     echo '
-                      <option value="Funcionando">Funcionando</option>
+                      <option value="Instalado">Instalado</option>
                       <option value="Almacenado">Almacenado</option>
                     ';
                   } else if($data->T_Estado == "Almacenado") {
                     echo '
-                      <option value="Funcionando">Funcionando</option>
+                      <option value="Instalado">Instalado</option>
                       <option value="Dañado">Dañado</option>
                     ';
                   }
@@ -180,6 +206,7 @@
             echo '<h4 class="card-title">Editar datos</h4>
               <form action="' . SERVERURL . 'conexiones/historial.php?updateO" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="save" class="FormularioAjax p-3">
               <input value="' . $data->O_Codigo . '" type="hidden" name="HCodigoUpdate">
+              <input value="' . $data->O_Municipio . '" type="hidden" name="HMunicipioUpdate">
               <div class="form-group">
                 <label for="HProcUpdate" class="text-dark">Procedimiento</label>
                 <select id="HProcUpdate" class="form-control input-default" name="HProcUpdate">
@@ -227,19 +254,19 @@
                 <select id="TEstadoAdd" class="form-control input-default" name="HEstadoUpdate">
                   <option value="' . $data->O_EstadoActual . '" selected="selected">' . $data->O_EstadoActual . '</option>
                   ';
-                  if($data->O_EstadoActual == "Funcionando") {
+                  if($data->O_EstadoActual == "Instalado") {
                     echo '
                     <option value="Dañado">Dañado</option>
                     <option value="Almacenado">Almacenado</option>
                     ';
                   } else if($data->O_EstadoActual == "Dañado") {
                     echo '
-                    <option value="Funcionando">Funcionando</option>
+                    <option value="Instalado">Instalado</option>
                     <option value="Almacenado">Almacenado</option>
                     ';
                   } else if($data->O_EstadoActual == "Almacenado") {
                     echo '
-                      <option value="Funcionando">Funcionando</option>
+                      <option value="Instalado">Instalado</option>
                       <option value="Dañado">Dañado</option>
                     ';
                   }
@@ -251,6 +278,59 @@
               <button type="submit" class="btn btn-primary">Editar datos</button>
               </form>
               ';
+            } else if(isset($_GET['cuenta'])) {
+              echo '<h4 class="card-title">Editar datos</h4>
+                <form action="' . SERVERURL . 'conexiones/create.php?updateC" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="save" class="FormularioAjax p-3">
+                  <div class="form-group">
+                    <label for="nombreUpdate" class="form-label">Nombre</label>
+                    <input type="text" value="' . $data->userName . '" name="nombreUpdate" onkeypress="return letras(event)" id="nombreUpdate" class="form-control input-default" />
+                  </div>
+
+                  <input type="hidden" name="codigoUpdate" value="' . $data->userCodigo . '" />
+                  <input type="hidden" name="contrasenaUpdate" value="' . $data->userPassword . '" />
+                  <input type="hidden" name="correoCheck" value="' . $data->userEmail . '" />
+                  <input type="hidden" name="userCheck" value="' . $data->userUsername . '" />
+
+                  <div class="form-group">
+                    <label for="apellidoUpdate" class="form-label">Apellido</label>
+                    <input type="text" value="' . $data->userLastname . '" name="apellidoUpdate" onkeypress="return letras(event)" id="apellidoUpdate" class="form-control input-default" />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="cargoUpdate" class="form-label">Nombre de Cargo</label>
+                    <input type="text" value="' . $data->userCargo . '" name="cargoUpdate" id="cargoUpdate" onkeypress="return letras(event)" class="form-control input-default" />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="correoUpdate" class="form-label">Correo Eléctronico</label>
+                    <input type="text" value="' . $data->userEmail . '" name="correoUpdate" id="correoUpdate" class="form-control input-default" />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="usuarioUpdate" class="form-label">Nombre de Usuario</label>
+                    <input type="text" value="' . $data->userUsername . '" name="usuarioUpdate" id="usuarioUpdate" class="form-control input-default" />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tipoUpdate" class="form-label">Tipo de Usuario</label>
+                    <select name="tipoUpdate" id="tipoUpdate" class="form-control input-default" >
+                      <option value="' . $data->userType . '" selected >' . $data->userType . '</option>
+                      ';
+                      if($data->userType == "Normal") {
+                        echo '<option value="Administrador">Administrador</option>';
+                      } else if($data->userType == "Administrador") {
+                        echo '<option value="Normal">Normal</option>';
+                      }
+                    echo '
+                    </select>
+                  </div>
+
+                  <a class="ml-3 text-primary" href="recover">Editar Contraseña</a><small class="ml-2">(Se cerrará la sesión)</small>
+
+                  <div class="RespuestaAjax mt-3"></div> 
+                  <button type="submit" class="btn btn-primary">Editar datos</button>
+                </form>
+              ';
             }
           ?>
         </div>
@@ -259,7 +339,23 @@
 
   <?php include "./modulos/scripts.php"; ?>
   <script src="<?php echo media; ?>js/ajax/principal.js"></script>
+  <script>
+    function letras(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
 
+        if (tecla == 8) {
+          return true;
+        }
+
+        if (tecla == 32) {
+          return true;
+        }
+
+        patron = /[A-Za-z]/;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
+      }
+  </script>
 </body>
 
 </html>

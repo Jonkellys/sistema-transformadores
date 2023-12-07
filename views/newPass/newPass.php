@@ -1,10 +1,26 @@
 <?php
   date_default_timezone_set("America/Caracas");
 
+  session_start(['name' => 'Sistema']);
+
+  unset($_SESSION['id']);
+  unset($_SESSION['codigo']);
+  unset($_SESSION['usuario']);
+  unset($_SESSION['clave']);
+  unset($_SESSION['tipo']);
+  unset($_SESSION['nombre']);
+  unset($_SESSION['apellido']);
+  unset($_SESSION['cargo']);
+  unset($_SESSION['token']);
+  unset($_SESSION['acceso']);
+
+  session_regenerate_id(true);
+                
+  session_destroy();
+
   $page = "newPass";
 
   if(!isset($_GET['token'])) {
-    
     header('Location: http://localhost/sistema-transformadores/login');
   }
 ?>
@@ -27,12 +43,13 @@
 
   <div class="d-flex mt-2 flex-row justify-content-between mb-0 ms-3">
     <a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="recover">
-      <i class="bx bx-arrow-back"></i> Volver
+      <i class="bx bx-arrow-back text-primary"></i> Volver
     </a>
   </div>
 
   <?php
-    $token = $_GET['token'];
+     include "./conexiones/funciones.php";
+     $token = strClean($_GET['token']);
   ?>
 
   <div class="card mb-4 col-4 d-flex flex-column align-items-center p-3 mx-auto mt-5">

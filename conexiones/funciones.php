@@ -114,7 +114,7 @@
         if($state == false) {
             $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Municipio = '$mun'");
         } else if($mun == false) {
-        $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = '$state'");
+            $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = '$state'");
         } else {
             $query = ejecutar_consulta_simple("SELECT id FROM transformadores WHERE T_Estado = '$state' AND T_Municipio = '$mun'");
         }
@@ -122,13 +122,21 @@
         return $total;
     }
 
+    function munChoose($name) {
+        if($name == "Central de Servicios") {
+            return $name;
+        } else {
+            return "Municipio " . $name;
+        }
+    }
+
     function getMunCapacidad($mun) {
         $total = 0;
 
         if($mun == false) {
-            $query = connect()->query("SELECT T_Capacidad FROM transformadores WHERE T_Estado = 'Funcionando' ");
+            $query = connect()->query("SELECT T_Capacidad FROM transformadores WHERE T_Estado = 'Instalado' ");
         } else {
-            $query = connect()->query("SELECT T_Capacidad FROM transformadores WHERE T_Municipio = '$mun' AND T_Estado = 'Funcionando'");
+            $query = connect()->query("SELECT T_Capacidad FROM transformadores WHERE T_Municipio = '$mun' AND T_Estado = 'Instalado'");
         }
 
         while ($rows = $query->fetch()) {

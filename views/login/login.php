@@ -1,4 +1,23 @@
-<?php $page = "login"; ?>
+<?php 
+  $page = "login"; 
+
+  session_start(['name' => 'Sistema']);
+
+    unset($_SESSION['id']);
+    unset($_SESSION['codigo']);
+    unset($_SESSION['usuario']);
+    unset($_SESSION['clave']);
+    unset($_SESSION['tipo']);
+    unset($_SESSION['nombre']);
+    unset($_SESSION['apellido']);
+    unset($_SESSION['cargo']);
+    unset($_SESSION['token']);
+    unset($_SESSION['acceso']);
+
+    session_regenerate_id(true);
+                
+    session_destroy();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,12 +36,12 @@
 
   <div class="d-flex mt-2 flex-row justify-content-between mb-0 ms-3">
     <a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="./">
-      <i class="bx bx-arrow-back"></i> Volver
+      <i class="bx bx-arrow-back text-primary"></i> Volver
     </a>
   </div>
 
     <div class="card mb-4 col-9 d-flex flex-row justify-content-start p-0 mx-auto mt-1">
-      <img class="rounded-left" style="width: 80%;" src="<?php echo media; ?>img/image-login.jpg" alt="Login-img">
+      <img class="rounded-left" style="width: 50%;" src="<?php echo media; ?>img/image-login.jpg" alt="Login-img">
       <div class="d-flex flex-row justify-content-center align-items-center w-75 my-5">
         <div class="d-flex flex-column align-items-center justify-content-center mt-3 col-12">
           <h2 class="mb-3 text-primary">Iniciar Sesión</h2>

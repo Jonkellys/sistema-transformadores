@@ -49,7 +49,7 @@ $(document).ready(function(){
                     },
                     error: function(error) {
                         respuesta.html("Error: " + error);
-                        console.log("Error: " + error);
+                        // console.log("Error: " + error);
                     }
                 });
             } else if(result.isDenied) {

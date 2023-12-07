@@ -5,7 +5,7 @@ require_once "./funciones.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   try {
 
-    $codigo = $_GET['deleteT'];
+    $codigo = strClean($_GET['deleteT']);
 
     echo $codigo;
     

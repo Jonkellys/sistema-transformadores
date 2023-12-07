@@ -38,15 +38,12 @@
           $_SESSION['tipo'] = $row['userType'];
           $_SESSION['nombre'] = $row['userName'];
           $_SESSION['apellido'] = $row['userLastname'];
+          $_SESSION['correo'] = $row['userEmail'];
           $_SESSION['cargo'] = $row['userCargo'];
           $_SESSION['token'] = md5(uniqid(mt_rand(), true));
           $_SESSION["acceso"]= time(); 
 
-          if($row['userType'] == "Administrador") {
-            echo '<script> window.location.href = "http://localhost/sistema-transformadores/dashboard"; </script>';
-          } else {
-            echo '<script> window.location.href = "http://localhost/sistema-transformadores/userDashboard"; </script>';
-          }
+          echo '<script> window.location.href = "http://localhost/sistema-transformadores/dashboard"; </script>';
         
       } else {
           echo "<script>new swal('¡Error!', 'La contraseña es incorrecta', 'error');</script>";

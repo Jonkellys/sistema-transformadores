@@ -53,11 +53,11 @@
               <div class="form-group">
                 <h5 class="text-dark">Municipios</h5>
                 <label class="radio-inline mr-3">
-                <input type="radio" name="radMun"  value="Andrés Mata"> Andrés Mata</label>
+                <input type="radio" name="radMun" value="Andrés Mata"> Andrés Mata</label>
                 <label class="radio-inline mr-3">
-                <input type="radio" name="radMun"  value="Arismendi"> Arismendi</label>
+                <input type="radio" name="radMun" value="Arismendi"> Arismendi</label>
                 <label class="radio-inline mr-3">
-                <input type="radio" name="radMun"  value="Benítez"> Benítez</label>
+                <input type="radio" name="radMun" value="Benítez"> Benítez</label>
                 <label class="radio-inline mr-3">
                 <input type="radio" name="radMun" value="Bermúdez"> Bermúdez</label>
                 <label class="radio-inline mr-3">
@@ -129,7 +129,7 @@
             <div class="col-2 p-0 m-2">
               <div class="card-body d-flex flex-column align-items-center">
                 <h5 class="card-title text-center">Transformadores Instalados</h5>
-                <span class="badge badge-success badge-pill font-tiny text-white">' . getMunCount('Funcionando', $mun) . '</span>
+                <span class="badge badge-success badge-pill font-tiny text-white">' . getMunCount('Instalado', $mun) . '</span>
               </div>
             </div>
 
@@ -178,9 +178,9 @@
                   while ($rows = $result->fetch()) {
                     echo"<tr>
                           <th> <strong>" . $num++ . "</strong></th>
-                          <td><a class='text-info' href='equipo?serial=" . $rows['T_Codigo'] . "'>" . $rows['T_Codigo'] . "</a></td>
+                          <td><a class='text-info' href='transformador?serial=" . $rows['T_Codigo'] . "'>" . $rows['T_Codigo'] . "</a></td>
                           <td>" . $rows['T_Estado'] . "</td>
-                          <td>" . $rows['T_Capacidad'] . "</td>
+                          <td>" . $rows['T_Capacidad'] . " w</td>
                           <td>" . $rows['T_Direccion'] . "</td>
                           <td>" . $rows['T_Tipo'] . "</td>
                           <td>" . $rows['T_Banco'] . "</td>

@@ -45,7 +45,7 @@
   <div class="container-fluid p-4">
     <div id="accordion-one" class="accordion">
       <div class="d-flex flex-row justify-content-space ml-5">
-        <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle"></i> Añadir Operación</button>
+        <button class="mb-0 btn btn-primary mx-1" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="bx bx-plus-circle text-white"></i> Añadir Operación</button>
       </div>
       
       <div id="collapseOne" class="collapse card mt-3 col-9 rounded mx-auto" data-parent="#accordion-one">
@@ -96,7 +96,11 @@
                 <th>Fecha</th>
                 <th>N° Serial del Transformador</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <?php
+                  if($_SESSION['tipo'] == "Administrador") {
+                    echo '<th>Acciones</th>';
+                  }
+                ?>
               </tr>
             </thead>
             <tbody>
@@ -110,18 +114,22 @@
                         <th> <strong>" . $num++ . "</strong></th>
                         <td>" . $rows['O_Procedimiento'] . "</td>
                         <td>" . $rows['O_Fecha'] . "</td>
-                        <td><a class='text-info' href='equipo?serial=" . $rows['O_Equipo'] . "'>" . $rows['O_Equipo'] . "</a></td>
+                        <td><a class='text-info' href='transformador?serial=" . $rows['O_Equipo'] . "'>" . $rows['O_Equipo'] . "</a></td>
                         <td>" . $rows['O_EstadoActual'] . "</td>
-                        <td class='mt-0'>
+                        ";
+
+                        if($_SESSION['tipo'] == "Administrador") {
+                        echo "<td class='mt-0'>
                           <a class='btn btn-sm btn-info' href='editar?operacion=" . $rows['O_Codigo'] . "'>
-                            <span class='tf-icons bx bx-edit'></span>
+                            <span class='tf-icons bx bx-edit text-white'></span>
                           </a>
 
                           <a class='btn btn-sm btn-danger' href='delete?operacion=" . $rows['O_Codigo'] . "'>
-                            <span class='tf-icons bx bx-trash'></span>
+                            <span class='tf-icons bx bx-trash text-white'></span>
                           </a>
-                        </td>
-                      </tr>";
+                        </td>";
+                        }
+                      echo "</tr>";
                 };  
               ?>
             </tbody>

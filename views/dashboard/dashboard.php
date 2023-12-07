@@ -63,7 +63,7 @@
           <div class="d-flex d-lg-flex d-md-block align-items-center">
             <div>
               <div class="d-inline-flex align-items-center">
-                <h2 class="text-dark mb-1 font-weight-medium"><?php echo getMunCount('Funcionando', false); ?></h2>
+                <h2 class="text-dark mb-1 font-weight-medium"><?php echo getMunCount('Instalado', false); ?></h2>
               </div>
               <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transformadores Instalados</h6>
             </div>
@@ -136,7 +136,7 @@
             
             <h5 class="card-title fw-semibold mt-1 mb-4">Historial de Operaciones</h5>
             <?php
-              $result = connect()->query("SELECT * FROM operaciones");
+              $result = connect()->query("SELECT * FROM operaciones LIMIT 8");
 
               while ($rows = $result->fetch()) {
                 if($rows['O_Procedimiento'] == "Retiro") {
@@ -152,14 +152,12 @@
                 echo '<div class="d-flex flex-row justify-content-center font-tiny mt-0">
                         <p class="text-muted">' . $rows['O_Fecha'] . '</p>
                         <i class="bx bx-circle ' . $color . ' mx-2 mt-1 font-weight-bold"></i>
-                        <p class="text-dark">' . $rows['O_Procedimiento'] . ' - <a href="equipo?serial=' . $rows['T_Codigo'] . '">' . $rows['O_Equipo'] . '</a></p>
+                        <p class="text-dark">' . $rows['O_Procedimiento'] . ' - <a href="transformador?serial=' . $rows['O_Equipo'] . '">' . $rows['O_Equipo'] . '</a></p>
                       </div>
                 ';
               };  
             ?>
           
-
-
           </div>
         </div>
       </div>
@@ -171,12 +169,12 @@
   <?php include "./modulos/scripts.php"; ?>
   <script type="module" src="<?php echo media; ?>extras/chartjs/chart.umd.min.js"></script>
   <script type="module">
-    const funcData = <?php echo json_encode(funcData("Funcionando")) ?>;
+    const funcData = <?php echo json_encode(funcData("Instalado")) ?>;
     const damData = <?php echo json_encode(funcData("Dañado")) ?>;
     const data = {
       labels: ["Andrés Mata", "Arismendi", "Benítez", "Bermúdez", "Cajigal", "Libertador", "Mariño", "Valdez"],
       datasets: [{
-        label: "Instalando",
+        label: "Instalado",
         data: funcData,
         borderColor: "rgba(111, 217, 111, 0.9)",
         borderWidth: "0",

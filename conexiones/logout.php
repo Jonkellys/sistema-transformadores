@@ -1,6 +1,6 @@
 <?php
 
-  session_start();
+session_start(['name' => 'Sistema']);
     
   unset($_SESSION['id']);
   unset($_SESSION['codigo']);

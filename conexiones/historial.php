@@ -5,13 +5,14 @@ require_once "./funciones.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   try {
     if(isset($_GET['HAdd'])) {
-      $stmt = connect()->prepare("INSERT INTO operaciones(O_Codigo, O_Procedimiento, O_Fecha, O_Equipo, O_EstadoActual) 
-            VALUES(:codigo, :procedimiento, :fecha, :equipo, :estado)");
+      $stmt = connect()->prepare("INSERT INTO operaciones(O_Codigo, O_Procedimiento, O_Fecha, O_Equipo, O_Municipio, O_EstadoActual) 
+            VALUES(:codigo, :procedimiento, :fecha, :equipo, :municipio, :estado)");
 
       $stmt->bindParam(':codigo', $codigo);
       $stmt->bindParam(':procedimiento', $procedimiento);
       $stmt->bindParam(':fecha', $fecha);
       $stmt->bindParam(':equipo', $equipo);
+      $stmt->bindParam(':municipio', $municipioT);
       $stmt->bindParam(':estado', $estado);
 
       $procedimiento = strClean($_POST["HProcAdd"]);
@@ -24,11 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       }
       
       if($procedimiento == "Reparación") {
-        $estado = "Funcionando";
+        $estado = "Almacenado";
       } else if($procedimiento == "Almacenamiento") {
         $estado = "Almacenado";
       } else if($procedimiento == "Instalación") {
-        $estado = "Funcionando";
+        $estado = "Instalado";
       } else if($procedimiento == "Retiro") {
         $estado = "Dañado";
       }
@@ -56,11 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
           exit();
         }
 
-        if($procedimiento == "Almacenamiento" || $procedimiento == "Retiro") {
+        if($procedimiento == "Almacenamiento") {
 	       $thing = "UPDATE transformadores SET T_Codigo = '$codigoT', T_Estado = '$estado', T_Capacidad = '$capacidadT', T_Municipio = 'Central de Servicios', T_Direccion = '$direccionT', T_Tipo = '$tipoT', T_Banco = '$bancoT' WHERE T_Codigo = '$equipo'";
         } else {
           $thing = "UPDATE transformadores SET T_Codigo = '$codigoT', T_Estado = '$estado', T_Capacidad = '$capacidadT', T_Municipio = '$municipioT', T_Direccion = '$direccionT', T_Tipo = '$tipoT', T_Banco = '$bancoT' WHERE T_Codigo = '$equipo'";	
         }
+
 	     
 	     $query = connect()->prepare($thing);
         
@@ -78,18 +80,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         echo "<script>new swal('Ocurrió un error', 'Por favor intente de nuevo', 'error');</script>";
       }
     } else if(isset($_GET['updateO'])) {
-      $sql = connect()->prepare("UPDATE operaciones SET O_Codigo = :codigo, O_Procedimiento = :procedimiento, O_Fecha = :fecha, O_Equipo = :equipo, O_EstadoActual = :estado WHERE O_Codigo = :codigo");
+      $sql = connect()->prepare("UPDATE operaciones SET O_Codigo = :codigo, O_Procedimiento = :procedimiento, O_Fecha = :fecha, O_Equipo = :equipo, O_Municipio = :municipio, O_EstadoActual = :estado WHERE O_Codigo = :codigo");
       
       $sql->bindParam(":codigo", $codigo);
       $sql->bindParam(":procedimiento", $procedimiento);
       $sql->bindParam(":fecha", $fecha);
       $sql->bindParam(":equipo", $equipo);
+      $sql->bindParam(":municipio", $municipio);
       $sql->bindParam(":estado", $estado);
 
       $codigo = strClean($_POST["HCodigoUpdate"]);
       $procedimiento = strClean($_POST["HProcUpdate"]);
       $fecha = strClean($_POST["HFechaUpdate"]);
       $equipo = strClean($_POST["HEquipoUpdate"]);
+      $municipio = strClean($_POST["HMunicipioUpdate"]);
       $estado = strClean($_POST["HEstadoUpdate"]);
 
       if($procedimiento == "" || $fecha == "" || $equipo == "" || $estado == "") {

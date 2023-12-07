@@ -20,6 +20,11 @@
     session_destroy();
     header('Location: http://localhost/sistema-transformadores/login');
   }
+
+  if($_SESSION['tipo'] == "Normal") {
+    header('Location: http://localhost/sistema-transformadores/dashboard');
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -39,30 +44,48 @@
     include "./conexiones/funciones.php"; 
   ?>
 
-<div class="d-flex flex-row justify-content-between mb-0 ms-3">
-    <a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="inventario">
-      <i class="bx bx-arrow-back"></i> Volver
-    </a>
-  </div>
+    <div class="d-flex flex-row justify-content-between mb-0 ms-3">
+      <?php
+          if(isset($_GET['transformador'])) {
+            echo '<a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="inventario">';
+          } else if(isset($_GET['operacion'])) {
+            echo '<a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="historial">';
+          } else if(isset($_GET['cuenta'])) {
+            echo '<a class="btn btn-outline-primaty py-2 text-primary ml-4 nav-icon" href="configuraciones">';
+          }
+        ?>
+        <i class="bx bx-arrow-back text-primary"></i> Volver
+      </a>
+    </div>
 
   <div class="container-fluid mt-0 flex-grow-1 container-p-y ml-5 mt-3">
-    <h4 class="fw-bold mb-0">Eliminar <?php if(isset($_GET['transformador'])) {echo "Transformador" . $delete;} else if(isset($_GET['operacion'])) {echo "Operación " . $delete;}?></h4>
+    <h4 class="fw-bold mb-0">Eliminar <?php if(isset($_GET['transformador'])) {echo "Transformador";} else if(isset($_GET['operacion'])) {echo "Operación";} else if(isset($_GET['cuenta'])) {echo "Cuenta";} ?></h4>
   </div>
 
     <?php 
     if(isset($_GET['transformador'])) {
 
-      $delete = $_GET['transformador'];
-
+      $delete = strClean($_GET['transformador']);
       $sql = connect()->prepare("SELECT * FROM transformadores WHERE T_Codigo = '$delete'");
+
     } else if(isset($_GET['operacion'])) {
 
-      $delete = $_GET['operacion'];
+      $delete = strClean($_GET['operacion']);
+      $sql = connect()->prepare("SELECT * FROM operaciones WHERE O_Codigo = '$delete'");
 
-      $sql = connect()->prepare("SELECT * FROM operaciones WHERE O_Codigo= '$delete'");
+    } else if(isset($_GET['cuenta'])) {
+
+      $delete = strClean($_GET['cuenta']);
+      $sql = connect()->prepare("SELECT * FROM usuarios WHERE userCodigo = '$delete'");
     }
-      $sql->execute();
-      $data = $sql->fetch(PDO::FETCH_OBJ);
+
+    if(!isset($delete)) {
+      header('Location: http://localhost/sistema-transformadores/dashboard');
+    }
+
+    $sql->execute();
+    $data = $sql->fetch(PDO::FETCH_OBJ);
+
     ?>
 
   <div class="container-fluid p-4">
@@ -108,6 +131,25 @@
                 <button type="submit" class="btn btn-danger mx-auto">Eliminar</button>  
               </form>
               ';
+          } else if(isset($_GET['cuenta'])) {
+            echo'<h4>Datos de la cuenta</h4>
+              </div>
+              <ul class="list-group col-9 mx-auto mt-3">
+                <li class="list-group-item"><strong>Nombre de Usuario:  </strong> ' . $data->userUsername . '</li>
+                <li class="list-group-item"><strong>Tipo de Cuenta:  </strong> ' . $data->userType . '</li>
+                <li class="list-group-item"><strong>Nombre:  </strong> ' . $data->userName . '</li>
+                <li class="list-group-item"><strong>Apellido:  </strong> ' . $data->userLastname . '</li>
+                <li class="list-group-item"><strong>Cargo:  </strong> ' . $data->userCargo . '</li>
+                <li class="list-group-item"><strong>Correo:  </strong> ' . $data->userEmail . '</li>
+              </ul>
+
+              <form action="' . SERVERURL . 'conexiones/create.php?deleteC" autocomplete="off" enctype="multipart/form-data" method="POST" data-form="delete" class="FormularioAjax p-3 d-flex flex-column align-items-center">
+                <input type="hidden" name="delC" value="' . $data->userCodigo . '">  
+                <div class="RespuestaAjax mt-3"></div> 
+                      
+                <button type="submit" class="btn btn-danger mx-auto">Eliminar</button>  
+              </form>
+            ';
           }
         ?>
       </div>
